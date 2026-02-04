@@ -4,6 +4,7 @@ import Button from '../../common/components/Button.tsx';
 import ExpenseList from './ExpenseList.tsx';
 import ExpenseForm from './ExpenseForm.tsx';
 import ExpenseSummary from './ExpenseSummary.tsx';
+import UnexpectedExpenses from './UnexpectedExpenses.tsx';
 import type { Expense } from '../../common/types/index.ts';
 
 export default function ExpensesPage() {
@@ -23,11 +24,12 @@ export default function ExpensesPage() {
   return (
     <div>
       <PageHeader title="Expenses">
-        <Button onClick={() => setShowForm(true)}>+ Add Expense</Button>
+        <Button onClick={() => setShowForm(true)}>+ Add Recurring Expense</Button>
       </PageHeader>
       <div className="space-y-6">
         <ExpenseSummary />
         <ExpenseList onEdit={handleEdit} />
+        <UnexpectedExpenses />
       </div>
       <ExpenseForm open={showForm} onClose={handleClose} editExpense={editExpense} />
     </div>

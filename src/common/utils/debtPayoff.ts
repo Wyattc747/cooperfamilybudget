@@ -54,6 +54,43 @@ export function calculatePeriodInterest(
   }
 }
 
+/**
+ * Estimate minimum payment for a debt based on balance, APR, and category.
+ * - Credit cards: max($25, 1% of balance + monthly interest)
+ * - Installment loans: amortization payment over standard term
+ */
+export function estimateMinimumPayment(
+  balance: number,
+  aprPercent: number,
+  compoundingType: CompoundingType,
+  debtCategory: string
+): number {
+  if (balance <= 0) return 0;
+
+  if (debtCategory === 'credit_card') {
+    // Credit card: max($25, 1% of balance + monthly interest)
+    const monthlyInterest = calculateMonthlyInterest(balance, aprPercent, compoundingType);
+    return Math.max(25, balance * 0.01 + monthlyInterest);
+  }
+
+  // Installment loans: PMT = P * r(1+r)^n / ((1+r)^n - 1)
+  const termMonths: Record<string, number> = {
+    student_loan: 120, // 10 years
+    auto_loan: 60,     // 5 years
+    personal_loan: 36, // 3 years
+    medical: 24,       // 2 years
+    mortgage: 360,     // 30 years
+    other: 60,         // 5 years default
+  };
+
+  const n = termMonths[debtCategory] ?? 60;
+  const r = aprPercent / 100 / 12;
+
+  if (r === 0) return balance / n;
+  const pmt = balance * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  return Math.max(pmt, 25);
+}
+
 export interface PayDelay {
   /** Number of months with reduced budget before full pay starts */
   months: number;

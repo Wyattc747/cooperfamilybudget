@@ -3,6 +3,7 @@ import IncomeForm from './IncomeForm.tsx';
 import TaxBreakdown from './TaxBreakdown.tsx';
 import NetIncomeDisplay from './NetIncomeDisplay.tsx';
 import FilingComparison from './FilingComparison.tsx';
+import IncomeChangeLog from './IncomeChangeLog.tsx';
 
 export default function IncomePage() {
   return (
@@ -14,6 +15,7 @@ export default function IncomePage() {
           <TaxBreakdown />
           <NetIncomeDisplay />
         </div>
+        <IncomeChangeLog />
         <FilingComparison />
       </div>
     </div>

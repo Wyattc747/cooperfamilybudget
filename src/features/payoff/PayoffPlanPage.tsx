@@ -6,7 +6,6 @@ import PayoffScheduleTable from './PayoffScheduleTable.tsx';
 import PayoffTimelineChart from './PayoffTimelineChart.tsx';
 import PaymentFrequencyAnalysis from './PaymentFrequencyAnalysis.tsx';
 import WithdrawalAnalysis from './WithdrawalAnalysis.tsx';
-import PaymentScheduleView from './PaymentScheduleView.tsx';
 
 export default function PayoffPlanPage() {
   const { state } = useApp();
@@ -26,7 +25,6 @@ export default function PayoffPlanPage() {
             <PayoffSettings />
             <StrategyComparison />
           </div>
-          <PaymentScheduleView />
           <PayoffTimelineChart />
           <PaymentFrequencyAnalysis />
           <WithdrawalAnalysis />

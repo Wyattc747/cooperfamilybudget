@@ -19,6 +19,8 @@ const defaultState: AppState = {
   expenses: [],
   accounts: [],
   assets: [],
+  incomeHistory: [],
+  unexpectedExpenses: [],
   payoffSettings: {
     monthlyBudget: 0,
     isManualOverride: false,
@@ -71,6 +73,27 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         assets: state.assets.filter((a) => a.id !== action.payload),
       };
+    case 'ADD_INCOME_CHANGE':
+      return { ...state, incomeHistory: [action.payload, ...state.incomeHistory] };
+    case 'DELETE_INCOME_CHANGE':
+      return {
+        ...state,
+        incomeHistory: state.incomeHistory.filter((e) => e.id !== action.payload),
+      };
+    case 'ADD_UNEXPECTED_EXPENSE':
+      return { ...state, unexpectedExpenses: [action.payload, ...state.unexpectedExpenses] };
+    case 'EDIT_UNEXPECTED_EXPENSE':
+      return {
+        ...state,
+        unexpectedExpenses: state.unexpectedExpenses.map((e) =>
+          e.id === action.payload.id ? action.payload : e
+        ),
+      };
+    case 'DELETE_UNEXPECTED_EXPENSE':
+      return {
+        ...state,
+        unexpectedExpenses: state.unexpectedExpenses.filter((e) => e.id !== action.payload),
+      };
     case 'SET_PAYOFF_SETTINGS':
       return {
         ...state,
@@ -111,11 +134,13 @@ function migrateState(state: AppState): AppState {
     nextPayDate: state.income.nextPayDate ?? '',
   };
   const assets = state.assets ?? [];
+  const incomeHistory = state.incomeHistory ?? [];
+  const unexpectedExpenses = state.unexpectedExpenses ?? [];
   const expenses = state.expenses.map((e) => ({
     ...e,
     dueDay: e.dueDay ?? 0,
   }));
-  return { ...state, accounts, income, assets, expenses };
+  return { ...state, accounts, income, assets, incomeHistory, unexpectedExpenses, expenses };
 }
 
 function initState(): AppState {

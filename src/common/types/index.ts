@@ -121,6 +121,33 @@ export interface Account {
   dueDay: number; // day of month payment is due (1-31), 0 = not set
 }
 
+// Income change log entry
+export interface IncomeChangeEntry {
+  id: string;
+  date: string; // ISO date
+  description: string;
+  field: 'baseSalary' | 'monthlyCommission' | 'monthlyBusinessIncome' | 'monthlyTaxFree';
+  previousAmount: number;
+  newAmount: number;
+}
+
+export const INCOME_FIELD_LABELS: Record<IncomeChangeEntry['field'], string> = {
+  baseSalary: 'Base Salary',
+  monthlyCommission: 'Monthly Commission',
+  monthlyBusinessIncome: 'Business Income',
+  monthlyTaxFree: 'Tax-Free Income',
+};
+
+// Unexpected / one-time expense
+export interface UnexpectedExpense {
+  id: string;
+  date: string; // ISO date
+  name: string;
+  amount: number;
+  category: string;
+  note: string;
+}
+
 // Asset (car, equipment, etc.)
 export interface Asset {
   id: string;
@@ -182,6 +209,8 @@ export interface AppState {
   expenses: Expense[];
   accounts: Account[];
   assets: Asset[];
+  incomeHistory: IncomeChangeEntry[];
+  unexpectedExpenses: UnexpectedExpense[];
   payoffSettings: PayoffSettings;
 }
 
@@ -197,6 +226,11 @@ export type AppAction =
   | { type: 'ADD_ASSET'; payload: Asset }
   | { type: 'EDIT_ASSET'; payload: Asset }
   | { type: 'DELETE_ASSET'; payload: string }
+  | { type: 'ADD_INCOME_CHANGE'; payload: IncomeChangeEntry }
+  | { type: 'DELETE_INCOME_CHANGE'; payload: string }
+  | { type: 'ADD_UNEXPECTED_EXPENSE'; payload: UnexpectedExpense }
+  | { type: 'EDIT_UNEXPECTED_EXPENSE'; payload: UnexpectedExpense }
+  | { type: 'DELETE_UNEXPECTED_EXPENSE'; payload: string }
   | { type: 'SET_PAYOFF_SETTINGS'; payload: Partial<PayoffSettings> }
   | { type: 'LOAD_STATE'; payload: AppState };
 
