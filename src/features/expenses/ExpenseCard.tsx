@@ -9,14 +9,14 @@ interface ExpenseCardProps {
 
 export default function ExpenseCard({ expense, onEdit, onDelete }: ExpenseCardProps) {
   return (
-    <div className="flex items-center justify-between bg-white rounded-lg border border-gray-200 px-4 py-3">
+    <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3">
       <div className="flex items-center gap-3">
         <div>
-          <p className="font-medium text-sm">{expense.name}</p>
+          <p className="font-medium text-sm dark:text-gray-100">{expense.name}</p>
           <div className="flex items-center gap-2">
-            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{expense.category}</span>
+            <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">{expense.category}</span>
             {expense.dueDay > 0 && (
-              <span className="text-xs text-purple-500">
+              <span className="text-xs text-purple-500 dark:text-purple-400">
                 Due: {expense.dueDay}{expense.dueDay === 1 || expense.dueDay === 21 || expense.dueDay === 31 ? 'st' : expense.dueDay === 2 || expense.dueDay === 22 ? 'nd' : expense.dueDay === 3 || expense.dueDay === 23 ? 'rd' : 'th'}
               </span>
             )}
@@ -24,10 +24,10 @@ export default function ExpenseCard({ expense, onEdit, onDelete }: ExpenseCardPr
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <span className="font-semibold text-sm">{formatCurrency(expense.amount)}<span className="text-gray-400 font-normal">/mo</span></span>
+        <span className="font-semibold text-sm dark:text-gray-100">{formatCurrency(expense.amount)}<span className="text-gray-400 dark:text-gray-500 font-normal">/mo</span></span>
         <button
           onClick={() => onEdit(expense)}
-          className="text-gray-400 hover:text-blue-600 p-1 transition-colors"
+          className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors"
           title="Edit"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -36,7 +36,7 @@ export default function ExpenseCard({ expense, onEdit, onDelete }: ExpenseCardPr
         </button>
         <button
           onClick={() => onDelete(expense.id)}
-          className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+          className="text-gray-400 hover:text-red-500 dark:hover:text-red-400 p-1 transition-colors"
           title="Delete"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

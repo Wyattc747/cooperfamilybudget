@@ -98,18 +98,18 @@ export default function HouseAffordability() {
             placeholder="2400"
           />
           <div className="flex flex-col justify-end">
-            <p className="text-xs text-gray-500 mb-1">Gross Monthly Income</p>
-            <p className="text-sm font-semibold">{formatCurrency(grossMonthlyIncome)}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Gross Monthly Income</p>
+            <p className="text-sm font-semibold dark:text-gray-200">{formatCurrency(grossMonthlyIncome)}</p>
           </div>
         </div>
 
         {grossMonthlyIncome > 0 ? (
           <>
             {/* Max home price */}
-            <div className="bg-blue-50 rounded-lg p-4 mb-4 text-center">
-              <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Maximum Affordable Home Price</p>
-              <p className="text-3xl font-bold text-blue-700 mt-1">{formatCurrency(result.maxHomePrice)}</p>
-              <p className="text-xs text-gray-500 mt-1">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-4 text-center">
+              <p className="text-xs text-blue-600 dark:text-blue-400 font-medium uppercase tracking-wide">Maximum Affordable Home Price</p>
+              <p className="text-3xl font-bold text-blue-700 dark:text-blue-300 mt-1">{formatCurrency(result.maxHomePrice)}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Limited by {result.limitingFactor === 'front_end' ? 'front-end DTI (28%)' : 'back-end DTI (36%)'}
               </p>
             </div>
@@ -122,17 +122,17 @@ export default function HouseAffordability() {
 
             {/* Monthly payment breakdown */}
             <div className="space-y-2 text-sm">
-              <h4 className="font-semibold text-gray-700">Monthly Payment Breakdown</h4>
+              <h4 className="font-semibold text-gray-700 dark:text-gray-300">Monthly Payment Breakdown</h4>
               <div className="space-y-1">
                 <Row label="Principal & Interest" value={formatCurrency(result.monthlyPI)} />
                 <Row label="Property Tax" value={formatCurrency(result.monthlyTax)} />
                 <Row label="Insurance" value={formatCurrency(result.monthlyInsurance)} />
                 {result.monthlyPMI > 0 && <Row label="PMI" value={formatCurrency(result.monthlyPMI)} />}
-                <div className="border-t border-gray-200 pt-1">
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-1">
                   <Row label="Total Housing Payment" value={formatCurrency(result.totalMonthlyHousing)} bold />
                 </div>
               </div>
-              <div className="text-xs text-gray-500 mt-2">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                 Down payment: {formatCurrency(result.downPayment)} | Loan: {formatCurrency(result.loanAmount)}
                 {result.monthlyPMI > 0 && ' | PMI required (< 20% down)'}
               </div>
@@ -148,33 +148,33 @@ export default function HouseAffordability() {
       {/* Debt payoff impact table */}
       {debtImpact.length > 0 && grossMonthlyIncome > 0 && (
         <Card title="Debt Payoff Impact on Home Qualification">
-          <p className="text-xs text-gray-500 mb-3">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
             See how paying off each debt improves your home buying power.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 font-medium text-gray-500">If you pay off...</th>
-                  <th className="text-right py-2 px-2 font-medium text-gray-500">Monthly Payment</th>
-                  <th className="text-right py-2 px-2 font-medium text-gray-500">DTI drops to</th>
-                  <th className="text-right py-2 px-2 font-medium text-gray-500">Max Price Increase</th>
-                  <th className="text-right py-2 px-2 font-medium text-gray-500">New Max Price</th>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400">If you pay off...</th>
+                  <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Monthly Payment</th>
+                  <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">DTI drops to</th>
+                  <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Max Price Increase</th>
+                  <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">New Max Price</th>
                 </tr>
               </thead>
               <tbody>
                 {debtImpact.map((d) => (
-                  <tr key={d.debtId} className="border-b border-gray-50">
-                    <td className="py-2 px-2 font-medium">{d.debtName}</td>
-                    <td className="py-2 px-2 text-right">{formatCurrency(d.monthlyPayment)}</td>
-                    <td className="py-2 px-2 text-right">
+                  <tr key={d.debtId} className="border-b border-gray-50 dark:border-gray-700/50">
+                    <td className="py-2 px-2 font-medium dark:text-gray-200">{d.debtName}</td>
+                    <td className="py-2 px-2 text-right dark:text-gray-300">{formatCurrency(d.monthlyPayment)}</td>
+                    <td className="py-2 px-2 text-right dark:text-gray-300">
                       {formatPercent(d.newBackEndDTI)}
-                      <span className="text-green-600 text-xs ml-1">(-{formatPercent(d.dtiDrop)})</span>
+                      <span className="text-green-600 dark:text-green-400 text-xs ml-1">(-{formatPercent(d.dtiDrop)})</span>
                     </td>
-                    <td className="py-2 px-2 text-right text-green-600 font-medium">
+                    <td className="py-2 px-2 text-right text-green-600 dark:text-green-400 font-medium">
                       +{formatCurrency(d.maxHomePriceIncrease)}
                     </td>
-                    <td className="py-2 px-2 text-right font-medium">{formatCurrency(d.newMaxHomePrice)}</td>
+                    <td className="py-2 px-2 text-right font-medium dark:text-gray-200">{formatCurrency(d.newMaxHomePrice)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -191,14 +191,14 @@ function DTIGauge({ label, value, limit }: { label: string; value: number; limit
   const isOver = value > limit;
 
   return (
-    <div className="bg-gray-50 rounded-lg p-3">
+    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
       <div className="flex justify-between text-xs mb-1">
-        <span className="font-medium text-gray-600">{label}</span>
-        <span className={`font-bold ${isOver ? 'text-red-600' : 'text-green-600'}`}>
+        <span className="font-medium text-gray-600 dark:text-gray-400">{label}</span>
+        <span className={`font-bold ${isOver ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
           {formatPercent(value)} / {limit}%
         </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
         <div
           className={`h-2 rounded-full transition-all ${isOver ? 'bg-red-500' : 'bg-green-500'}`}
           style={{ width: `${Math.min(pct, 100)}%` }}
@@ -211,8 +211,8 @@ function DTIGauge({ label, value, limit }: { label: string; value: number; limit
 function Row({ label, value, bold = false }: { label: string; value: string; bold?: boolean }) {
   return (
     <div className="flex justify-between">
-      <span className={`text-gray-600 ${bold ? 'font-semibold' : ''}`}>{label}</span>
-      <span className={`${bold ? 'font-bold' : 'font-medium'}`}>{value}</span>
+      <span className={`text-gray-600 dark:text-gray-400 ${bold ? 'font-semibold' : ''}`}>{label}</span>
+      <span className={`dark:text-gray-200 ${bold ? 'font-bold' : 'font-medium'}`}>{value}</span>
     </div>
   );
 }

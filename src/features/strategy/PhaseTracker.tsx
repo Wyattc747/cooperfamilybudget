@@ -11,23 +11,23 @@ const STATUS_STYLES = {
   completed: {
     dot: 'bg-green-500',
     line: 'bg-green-500',
-    bg: 'bg-green-50 border-green-200',
-    text: 'text-green-700',
-    badge: 'bg-green-100 text-green-700',
+    bg: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+    text: 'text-green-700 dark:text-green-400',
+    badge: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400',
   },
   active: {
-    dot: 'bg-blue-500 ring-4 ring-blue-100',
-    line: 'bg-blue-200',
-    bg: 'bg-blue-50 border-blue-200',
-    text: 'text-blue-700',
-    badge: 'bg-blue-100 text-blue-700',
+    dot: 'bg-blue-500 ring-4 ring-blue-100 dark:ring-blue-900',
+    line: 'bg-blue-200 dark:bg-blue-800',
+    bg: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
+    text: 'text-blue-700 dark:text-blue-400',
+    badge: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
   },
   upcoming: {
-    dot: 'bg-gray-300',
-    line: 'bg-gray-200',
-    bg: 'bg-gray-50 border-gray-200',
-    text: 'text-gray-500',
-    badge: 'bg-gray-100 text-gray-500',
+    dot: 'bg-gray-300 dark:bg-gray-600',
+    line: 'bg-gray-200 dark:bg-gray-700',
+    bg: 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700',
+    text: 'text-gray-500 dark:text-gray-400',
+    badge: 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
   },
 };
 
@@ -57,16 +57,16 @@ export default function PhaseTracker({ phases }: PhaseTrackerProps) {
                     {phase.status === 'completed' ? 'Done' : phase.status === 'active' ? 'Current' : 'Upcoming'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-600 mb-2">{phase.description}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{phase.description}</p>
 
                 {/* Progress bar for active phase */}
                 {phase.status === 'active' && phase.progress > 0 && (
                   <div className="mb-2">
-                    <div className="flex justify-between text-xs text-gray-500 mb-1">
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
                       <span>Progress</span>
                       <span>{phase.progress.toFixed(0)}%</span>
                     </div>
-                    <div className="w-full bg-white rounded-full h-1.5">
+                    <div className="w-full bg-white dark:bg-gray-700 rounded-full h-1.5">
                       <div
                         className="h-1.5 rounded-full bg-blue-500 transition-all"
                         style={{ width: `${phase.progress}%` }}
@@ -75,7 +75,7 @@ export default function PhaseTracker({ phases }: PhaseTrackerProps) {
                   </div>
                 )}
 
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
                   {phase.estimatedMonths > 0 && phase.estimatedMonths < 360 && (
                     <span>~{phase.estimatedMonths} months</span>
                   )}

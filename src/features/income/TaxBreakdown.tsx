@@ -29,53 +29,53 @@ export default function TaxBreakdown() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-2 px-2 font-medium text-gray-500">Bracket</th>
-              <th className="text-left py-2 px-2 font-medium text-gray-500">Rate</th>
-              <th className="text-right py-2 px-2 font-medium text-gray-500">Taxable</th>
-              <th className="text-right py-2 px-2 font-medium text-gray-500">Tax</th>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Bracket</th>
+              <th className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Rate</th>
+              <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Taxable</th>
+              <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Tax</th>
             </tr>
           </thead>
           <tbody>
             {activeBrackets.map((b, i) => (
-              <tr key={i} className="border-b border-gray-100">
-                <td className="py-2 px-2 text-gray-600">
+              <tr key={i} className="border-b border-gray-100 dark:border-gray-700/50">
+                <td className="py-2 px-2 text-gray-600 dark:text-gray-400">
                   {formatCurrency(b.bracket.min)} - {b.bracket.max === Infinity ? '...' : formatCurrency(b.bracket.max)}
                 </td>
-                <td className="py-2 px-2">{formatPercent(b.bracket.rate * 100, 0)}</td>
-                <td className="py-2 px-2 text-right">{formatCurrency(b.taxable)}</td>
-                <td className="py-2 px-2 text-right font-medium">{formatCurrency(b.tax)}</td>
+                <td className="py-2 px-2 dark:text-gray-300">{formatPercent(b.bracket.rate * 100, 0)}</td>
+                <td className="py-2 px-2 text-right dark:text-gray-300">{formatCurrency(b.taxable)}</td>
+                <td className="py-2 px-2 text-right font-medium dark:text-gray-200">{formatCurrency(b.tax)}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
-            <tr className="border-t border-gray-300 font-medium">
-              <td colSpan={3} className="py-2 px-2">Federal Tax Total</td>
-              <td className="py-2 px-2 text-right">{formatCurrency(result.totalFederalTax)}</td>
+            <tr className="border-t border-gray-300 dark:border-gray-600 font-medium">
+              <td colSpan={3} className="py-2 px-2 dark:text-gray-200">Federal Tax Total</td>
+              <td className="py-2 px-2 text-right dark:text-gray-200">{formatCurrency(result.totalFederalTax)}</td>
             </tr>
           </tfoot>
         </table>
       </div>
 
       {/* Base vs Commission split */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Tax Split: Base vs Commission</h4>
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tax Split: Base vs Commission</h4>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500">Tax on Base Salary</p>
-            <p className="font-semibold">{formatCurrency(result.baseTax)}</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+            <p className="text-gray-500 dark:text-gray-400">Tax on Base Salary</p>
+            <p className="font-semibold dark:text-gray-200">{formatCurrency(result.baseTax)}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500">Tax on Commission</p>
-            <p className="font-semibold">{formatCurrency(result.commissionTax)}</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+            <p className="text-gray-500 dark:text-gray-400">Tax on Commission</p>
+            <p className="font-semibold dark:text-gray-200">{formatCurrency(result.commissionTax)}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500">State Tax (Base)</p>
-            <p className="font-semibold">{formatCurrency(result.baseStateTax)}</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+            <p className="text-gray-500 dark:text-gray-400">State Tax (Base)</p>
+            <p className="font-semibold dark:text-gray-200">{formatCurrency(result.baseStateTax)}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500">State Tax (Commission)</p>
-            <p className="font-semibold">{formatCurrency(result.commissionStateTax)}</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+            <p className="text-gray-500 dark:text-gray-400">State Tax (Commission)</p>
+            <p className="font-semibold dark:text-gray-200">{formatCurrency(result.commissionStateTax)}</p>
           </div>
         </div>
       </div>

@@ -122,7 +122,7 @@ export default function IncomeForm() {
       </Card>
 
       <Card title="Business Income">
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
           Track income from your business separately. This is included in your total monthly income and tax calculations.
         </p>
         <FormGroup columns={2}>

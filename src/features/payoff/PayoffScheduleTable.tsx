@@ -30,44 +30,44 @@ export default function PayoffScheduleTable() {
     <Card title="Month-by-Month Schedule (Avalanche)">
       <div className="overflow-x-auto max-h-96">
         <table className="w-full text-xs">
-          <thead className="sticky top-0 bg-white">
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-2 px-2 font-medium text-gray-500">Month</th>
-              <th className="text-left py-2 px-2 font-medium text-gray-500">Date</th>
+          <thead className="sticky top-0 bg-white dark:bg-gray-800">
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Month</th>
+              <th className="text-left py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Date</th>
               {debts.map((d) => (
-                <th key={d.id} className="text-right py-2 px-2 font-medium text-gray-500">{d.name}</th>
+                <th key={d.id} className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">{d.name}</th>
               ))}
-              <th className="text-right py-2 px-2 font-medium text-gray-500">Remaining</th>
-              <th className="text-right py-2 px-2 font-medium text-gray-500">Interest</th>
+              <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Remaining</th>
+              <th className="text-right py-2 px-2 font-medium text-gray-500 dark:text-gray-400">Interest</th>
             </tr>
           </thead>
           <tbody>
             {schedule.schedule.map((entry) => (
-              <tr key={entry.month} className="border-b border-gray-50 hover:bg-gray-50">
-                <td className="py-1.5 px-2 text-gray-600">{entry.month}</td>
-                <td className="py-1.5 px-2 text-gray-600">{entry.date}</td>
+              <tr key={entry.month} className="border-b border-gray-50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="py-1.5 px-2 text-gray-600 dark:text-gray-400">{entry.month}</td>
+                <td className="py-1.5 px-2 text-gray-600 dark:text-gray-400">{entry.date}</td>
                 {debts.map((d) => {
                   const p = entry.payments.find((pm) => pm.accountId === d.id);
                   return (
                     <td key={d.id} className="py-1.5 px-2 text-right">
                       {p && p.payment > 0 ? (
-                        <span className="text-gray-800">{formatCurrency(p.payment)}</span>
+                        <span className="text-gray-800 dark:text-gray-200">{formatCurrency(p.payment)}</span>
                       ) : (
-                        <span className="text-gray-300">-</span>
+                        <span className="text-gray-300 dark:text-gray-600">-</span>
                       )}
                     </td>
                   );
                 })}
-                <td className="py-1.5 px-2 text-right font-medium">{formatCurrency(entry.totalRemaining)}</td>
-                <td className="py-1.5 px-2 text-right text-red-500">{formatCurrency(entry.totalInterest)}</td>
+                <td className="py-1.5 px-2 text-right font-medium dark:text-gray-200">{formatCurrency(entry.totalRemaining)}</td>
+                <td className="py-1.5 px-2 text-right text-red-500 dark:text-red-400">{formatCurrency(entry.totalInterest)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="mt-3 pt-3 border-t border-gray-200 flex justify-between text-sm">
-        <span className="text-gray-600">Total interest paid</span>
-        <span className="font-semibold text-red-600">{formatCurrency(schedule.totalInterestPaid)}</span>
+      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between text-sm">
+        <span className="text-gray-600 dark:text-gray-400">Total interest paid</span>
+        <span className="font-semibold text-red-600 dark:text-red-400">{formatCurrency(schedule.totalInterestPaid)}</span>
       </div>
     </Card>
   );

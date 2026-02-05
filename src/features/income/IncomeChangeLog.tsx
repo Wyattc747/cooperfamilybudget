@@ -73,14 +73,14 @@ export default function IncomeChangeLog() {
 
   return (
     <Card title="Income Change Log">
-      <p className="text-xs text-gray-500 mb-3">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
         Track when your income changes over time. Logging a change also updates your current income.
       </p>
 
       {!showForm ? (
         <Button size="sm" onClick={handleStartLog}>+ Log Income Change</Button>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-3 border border-gray-200 rounded-lg p-3 mb-3">
+        <form onSubmit={handleSubmit} className="space-y-3 border border-gray-200 dark:border-gray-700 rounded-lg p-3 mb-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               label="Date"
@@ -135,21 +135,21 @@ export default function IncomeChangeLog() {
             const isIncrease = entry.newAmount > entry.previousAmount;
             const diff = entry.newAmount - entry.previousAmount;
             return (
-              <div key={entry.id} className="flex items-start justify-between py-2 border-b border-gray-100 last:border-0">
+              <div key={entry.id} className="flex items-start justify-between py-2 border-b border-gray-100 dark:border-gray-700/50 last:border-0">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">
                       {new Date(entry.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                       {INCOME_FIELD_LABELS[entry.field]}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-700 mt-0.5">{entry.description}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 mt-0.5">{entry.description}</p>
                   <div className="flex items-center gap-1.5 text-xs mt-0.5">
                     <span className="text-gray-400">{formatCurrency(entry.previousAmount)}</span>
-                    <span className="text-gray-300">&rarr;</span>
-                    <span className="font-medium text-gray-700">{formatCurrency(entry.newAmount)}</span>
+                    <span className="text-gray-300 dark:text-gray-600">&rarr;</span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{formatCurrency(entry.newAmount)}</span>
                     <span className={`font-medium ${isIncrease ? 'text-green-600' : diff < 0 ? 'text-red-600' : 'text-gray-400'}`}>
                       ({isIncrease ? '+' : ''}{formatCurrency(diff)})
                     </span>
@@ -157,7 +157,7 @@ export default function IncomeChangeLog() {
                 </div>
                 <button
                   onClick={() => dispatch({ type: 'DELETE_INCOME_CHANGE', payload: entry.id })}
-                  className="text-gray-300 hover:text-red-500 p-1 shrink-0"
+                  className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 p-1 shrink-0"
                   title="Delete entry"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

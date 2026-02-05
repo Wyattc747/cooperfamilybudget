@@ -211,13 +211,13 @@ export default function ProposedBudget() {
 
   const allLines = [...budget.needs, ...budget.strategic];
   const phaseLabel = hasCCDebt ? 'Debt Attack' : hasOtherDebt ? 'Build & Pay' : 'Grow Wealth';
-  const phaseColor = hasCCDebt ? 'bg-red-100 text-red-700' : hasOtherDebt ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700';
+  const phaseColor = hasCCDebt ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : hasOtherDebt ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300';
 
   return (
     <Card title="Proposed Budget">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-gray-500">
-          {formatCurrency(monthlyNet)}<span className="text-gray-400">/mo net</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          {formatCurrency(monthlyNet)}<span className="text-gray-400 dark:text-gray-500">/mo net</span>
         </span>
         <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${phaseColor}`}>
           {phaseLabel}
@@ -256,11 +256,11 @@ export default function ProposedBudget() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Necessities</span>
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Necessities</span>
             </div>
-            <span className="text-xs font-semibold text-gray-600">
+            <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
               {formatCurrency(budget.needsTotal)}
-              <span className="text-gray-400 font-normal ml-1">{((budget.needsTotal / monthlyNet) * 100).toFixed(0)}%</span>
+              <span className="text-gray-400 dark:text-gray-500 font-normal ml-1">{((budget.needsTotal / monthlyNet) * 100).toFixed(0)}%</span>
             </span>
           </button>
           {showNeeds && (
@@ -269,9 +269,9 @@ export default function ProposedBudget() {
                 <div key={line.label} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: line.color }} />
-                    <span className="text-gray-600">{line.label}</span>
+                    <span className="text-gray-600 dark:text-gray-400">{line.label}</span>
                   </div>
-                  <span className="text-gray-600 tabular-nums">{formatCurrency(line.amount)}</span>
+                  <span className="text-gray-600 dark:text-gray-400 tabular-nums">{formatCurrency(line.amount)}</span>
                 </div>
               ))}
               <p className="text-[10px] text-gray-400 mt-1">
@@ -289,10 +289,10 @@ export default function ProposedBudget() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: line.color }} />
-                <span className="text-sm font-medium text-gray-700">{line.label}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{line.label}</span>
                 <span className="text-[10px] text-gray-400">{line.pct.toFixed(0)}%</span>
               </div>
-              <span className="text-sm font-semibold tabular-nums">{formatCurrency(line.amount)}</span>
+              <span className="text-sm font-semibold dark:text-gray-200 tabular-nums">{formatCurrency(line.amount)}</span>
             </div>
             <p className="text-[11px] text-gray-400 ml-4 leading-tight">{line.why}</p>
           </div>
@@ -300,7 +300,7 @@ export default function ProposedBudget() {
       </div>
 
       {/* Footer */}
-      <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+      <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-xs text-gray-400">
         <span>Spending: {formatCurrency(totalExpenses)}/mo</span>
         <span>Remaining: {formatCurrency(Math.max(0, monthlyNet - totalExpenses))}/mo</span>
       </div>

@@ -118,8 +118,8 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
 
   const debts = accounts.filter((a) => a.type === 'debt' && a.dueDay > 0);
   const dueExpenses = expenses.filter((e) => e.dueDay > 0);
-  const savings = accounts.filter((a) => a.type === 'savings');
-  const startingCash = savings.reduce((sum, s) => sum + s.balance, 0);
+  const cashAccounts = accounts.filter((a) => a.type === 'cash');
+  const startingCash = cashAccounts.reduce((sum, s) => sum + s.balance, 0);
   const hasPayDate = !!income.nextPayDate;
 
   // Items to display based on filter
@@ -274,29 +274,29 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
   }
 
   const balanceColor = (bal: number) =>
-    bal < 0 ? 'text-red-600' : bal < 200 ? 'text-amber-600' : 'text-green-700';
+    bal < 0 ? 'text-red-600 dark:text-red-400' : bal < 200 ? 'text-amber-600 dark:text-amber-400' : 'text-green-700 dark:text-green-400';
 
   function renderItem(item: SimulatedItem) {
     const isDot = item.type === 'debt' ? 'bg-red-500' : 'bg-amber-500';
-    const isText = item.type === 'debt' ? 'text-red-700' : 'text-amber-700';
+    const isText = item.type === 'debt' ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400';
     return (
       <div
         key={`${item.name}-${item.dueDate.getTime()}`}
-        className={`flex items-center gap-3 px-4 py-1.5 text-sm ${item.insufficientFunds ? 'bg-red-50' : ''}`}
+        className={`flex items-center gap-3 px-4 py-1.5 text-sm ${item.insufficientFunds ? 'bg-red-50 dark:bg-red-900/20' : ''}`}
       >
         <span className={`w-2 h-2 rounded-full shrink-0 ${isDot}`} />
         <span className={`font-medium ${isText}`}>{item.name}</span>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-400 dark:text-gray-500">
           due {formatDate(item.dueDate)}
           {item.daysUntilDue > 0 && ` (${item.daysUntilDue}d)`}
           {item.daysUntilDue === 0 && ' (same day)'}
         </span>
         {item.insufficientFunds && (
-          <span className="text-[10px] font-medium bg-red-100 text-red-700 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-medium bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 px-1.5 py-0.5 rounded">
             INSUFFICIENT
           </span>
         )}
-        <span className="text-gray-600 ml-auto font-medium tabular-nums">
+        <span className="text-gray-600 dark:text-gray-300 ml-auto font-medium tabular-nums">
           {formatCurrency(item.amount)}
         </span>
       </div>
@@ -308,13 +308,13 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
       {/* Starting balance summary */}
       {!compact && hasPayDate && (
         <div className="flex flex-wrap gap-3 mb-4 text-xs">
-          <div className="px-2.5 py-1.5 rounded-lg bg-blue-50">
-            <span className="text-blue-500">Starting Cash </span>
-            <span className="font-semibold text-blue-700">{formatCurrency(startingCash)}</span>
+          <div className="px-2.5 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30">
+            <span className="text-blue-500 dark:text-blue-400">Starting Cash </span>
+            <span className="font-semibold text-blue-700 dark:text-blue-300">{formatCurrency(startingCash)}</span>
           </div>
-          <div className="px-2.5 py-1.5 rounded-lg bg-green-50">
-            <span className="text-green-500">Per Paycheck </span>
-            <span className="font-semibold text-green-700">{formatCurrency(perPaycheck)}</span>
+          <div className="px-2.5 py-1.5 rounded-lg bg-green-50 dark:bg-green-900/30">
+            <span className="text-green-500 dark:text-green-400">Per Paycheck </span>
+            <span className="font-semibold text-green-700 dark:text-green-300">{formatCurrency(perPaycheck)}</span>
           </div>
         </div>
       )}
@@ -338,19 +338,19 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
             if (visibleExpenses.length === 0 && visibleDebts.length === 0) return null;
 
             return (
-              <div key={gi} className={`rounded-lg border ${hasInsufficient ? 'border-red-300' : isNext ? 'border-green-300' : 'border-gray-200'}`}>
+              <div key={gi} className={`rounded-lg border ${hasInsufficient ? 'border-red-300 dark:border-red-800' : isNext ? 'border-green-300 dark:border-green-800' : 'border-gray-200 dark:border-gray-700'}`}>
                 {/* Paycheck header */}
-                <div className={`flex items-center justify-between px-4 py-2 rounded-t-lg ${hasInsufficient ? 'bg-red-50' : isNext ? 'bg-green-100' : 'bg-gray-50'}`}>
+                <div className={`flex items-center justify-between px-4 py-2 rounded-t-lg ${hasInsufficient ? 'bg-red-50 dark:bg-red-900/20' : isNext ? 'bg-green-100 dark:bg-green-900/20' : 'bg-gray-50 dark:bg-gray-700/50'}`}>
                   <div className="flex items-center gap-2">
                     <span className={`w-2.5 h-2.5 rounded-full ${hasInsufficient ? 'bg-red-500' : 'bg-green-500'}`} />
-                    <span className={`text-sm font-semibold ${hasInsufficient ? 'text-red-800' : isNext ? 'text-green-800' : 'text-gray-700'}`}>
+                    <span className={`text-sm font-semibold ${hasInsufficient ? 'text-red-800 dark:text-red-300' : isNext ? 'text-green-800 dark:text-green-300' : 'text-gray-700 dark:text-gray-300'}`}>
                       {formatDateLong(group.payDate)} Paycheck
                     </span>
                     {isNext && !hasInsufficient && (
-                      <span className="text-[10px] font-medium bg-green-200 text-green-800 px-1.5 py-0.5 rounded">NEXT</span>
+                      <span className="text-[10px] font-medium bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-300 px-1.5 py-0.5 rounded">NEXT</span>
                     )}
                     {hasInsufficient && (
-                      <span className="text-[10px] font-medium bg-red-200 text-red-800 px-1.5 py-0.5 rounded">SHORTFALL</span>
+                      <span className="text-[10px] font-medium bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-300 px-1.5 py-0.5 rounded">SHORTFALL</span>
                     )}
                   </div>
                   <div className="text-right text-xs">
@@ -363,13 +363,13 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
                   </div>
                 </div>
 
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-gray-100 dark:divide-gray-700/50">
                   {/* Expense items */}
                   {visibleExpenses.length > 0 && (
                     <>
                       {filter === 'all' && (
-                        <div className="px-4 py-1 bg-amber-50/50">
-                          <span className="text-[10px] font-semibold text-amber-600 uppercase tracking-wider">Bills & Expenses</span>
+                        <div className="px-4 py-1 bg-amber-50/50 dark:bg-amber-900/10">
+                          <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Bills & Expenses</span>
                         </div>
                       )}
                       {visibleExpenses.map(renderItem)}
@@ -380,8 +380,8 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
                   {visibleDebts.length > 0 && (
                     <>
                       {filter === 'all' && (
-                        <div className="px-4 py-1 bg-red-50/50">
-                          <span className="text-[10px] font-semibold text-red-600 uppercase tracking-wider">Debt Payments</span>
+                        <div className="px-4 py-1 bg-red-50/50 dark:bg-red-900/10">
+                          <span className="text-[10px] font-semibold text-red-600 dark:text-red-400 uppercase tracking-wider">Debt Payments</span>
                         </div>
                       )}
                       {visibleDebts.map(renderItem)}
@@ -390,7 +390,7 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
 
                   {/* Balance footer */}
                   {!compact && (
-                    <div className="flex items-center justify-between px-4 py-1.5 text-xs bg-gray-50/50">
+                    <div className="flex items-center justify-between px-4 py-1.5 text-xs bg-gray-50/50 dark:bg-gray-800/50">
                       <span className="text-gray-400">
                         {filter === 'all'
                           ? `${formatCurrency(group.totalExpenses + group.totalDebt)} total payments`
@@ -414,7 +414,7 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
       {flatTimeline.length > 0 && (
         <div>
           {filter === 'all' && (
-            <div className="flex items-center gap-4 text-xs text-gray-500 mb-2">
+            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mb-2">
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Debt</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> Expense</span>
             </div>
@@ -424,14 +424,14 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
               <div
                 key={i}
                 className={`flex items-center gap-3 text-sm px-3 py-1.5 rounded-lg ${
-                  item.type === 'debt' ? 'bg-red-50' : 'bg-amber-50'
+                  item.type === 'debt' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-amber-50 dark:bg-amber-900/20'
                 }`}
               >
                 <span className={`w-2 h-2 rounded-full shrink-0 ${item.type === 'debt' ? 'bg-red-500' : 'bg-amber-500'}`} />
-                <span className="text-gray-500 w-16 shrink-0">{formatDate(item.dueDate)}</span>
-                <span className={`font-medium ${item.type === 'debt' ? 'text-red-700' : 'text-amber-700'}`}>{item.name}</span>
+                <span className="text-gray-500 dark:text-gray-400 w-16 shrink-0">{formatDate(item.dueDate)}</span>
+                <span className={`font-medium ${item.type === 'debt' ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400'}`}>{item.name}</span>
                 {item.amount > 0 && (
-                  <span className="text-gray-500 ml-auto">{formatCurrency(item.amount)}</span>
+                  <span className="text-gray-500 dark:text-gray-400 ml-auto">{formatCurrency(item.amount)}</span>
                 )}
               </div>
             ))}
@@ -441,7 +441,7 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
 
       {/* Legend */}
       {paycheckGroups.length > 0 && !compact && (
-        <div className="flex items-center gap-4 text-xs text-gray-400 mt-3 pt-3 border-t border-gray-100">
+        <div className="flex items-center gap-4 text-xs text-gray-400 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" /> Payday</span>
           {(filter === 'all' || filter === 'debt') && (
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Debt</span>
@@ -449,7 +449,7 @@ export default function PaymentScheduleView({ compact = false, filter = 'all', t
           {(filter === 'all' || filter === 'expense') && (
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> Expense</span>
           )}
-          <span className="ml-auto text-gray-300">Cash from savings accounts</span>
+          <span className="ml-auto text-gray-300">Cash from cash accounts</span>
         </div>
       )}
     </Card>

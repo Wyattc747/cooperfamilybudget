@@ -71,11 +71,12 @@ export default function ProjectionChart({ projections, phases }: ProjectionChart
         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <XAxis
             dataKey="month"
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: '#9ca3af' }}
             tickFormatter={formatXAxis}
             interval={Math.max(0, Math.floor(chartData.length / 8) - 1)}
+            stroke="#6b7280"
           />
-          <YAxis tick={{ fontSize: 10 }} tickFormatter={formatYAxis} />
+          <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} tickFormatter={formatYAxis} stroke="#6b7280" />
           <Tooltip
             formatter={(value) => formatCurrency(Number(value))}
             labelFormatter={(month) => formatXAxis(month as number)}

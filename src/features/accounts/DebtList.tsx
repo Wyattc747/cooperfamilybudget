@@ -40,9 +40,9 @@ export default function DebtList({ onEdit }: DebtListProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-gray-700">Debts</h3>
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Debts</h3>
         {debts.length > 0 && (
-          <span className="text-sm font-semibold text-red-600">Total: {formatCurrency(totalDebt)}</span>
+          <span className="text-sm font-semibold text-red-600 dark:text-red-400">Total: {formatCurrency(totalDebt)}</span>
         )}
       </div>
       {debts.length === 0 ? (
@@ -52,10 +52,10 @@ export default function DebtList({ onEdit }: DebtListProps) {
           {grouped.map((group) => (
             <div key={group.category}>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                   {group.label}s
                 </span>
-                <span className="text-xs font-medium text-red-500">
+                <span className="text-xs font-medium text-red-500 dark:text-red-400">
                   {formatCurrency(group.total)}
                 </span>
               </div>

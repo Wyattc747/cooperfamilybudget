@@ -39,10 +39,11 @@ export default function PayoffTimelineChart() {
         <LineChart data={chartData}>
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: '#9ca3af' }}
             interval={Math.max(0, Math.floor(chartData.length / 8) - 1)}
+            stroke="#6b7280"
           />
-          <YAxis tick={{ fontSize: 10 }} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} />
+          <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} stroke="#6b7280" />
           <Tooltip formatter={(value) => formatCurrency(Number(value))} />
           <Legend />
           <Line type="monotone" dataKey="avalanche" stroke="#3b82f6" strokeWidth={2} dot={false} name="Avalanche" />

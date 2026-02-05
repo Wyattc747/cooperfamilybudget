@@ -15,9 +15,10 @@ export default function SummaryCards() {
 
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
   const totalDebt = accounts.filter((a) => a.type === 'debt').reduce((sum, a) => sum + a.balance, 0);
-  const totalSavings = accounts.filter((a) => a.type === 'savings').reduce((sum, a) => sum + a.balance, 0);
+  const totalCash = accounts.filter((a) => a.type === 'cash').reduce((sum, a) => sum + a.balance, 0);
+  const totalInvestments = accounts.filter((a) => a.type === 'investment').reduce((sum, a) => sum + a.balance, 0);
   const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
-  const netWorth = totalSavings + totalAssets - totalDebt;
+  const netWorth = totalCash + totalInvestments + totalAssets - totalDebt;
   const monthlyNet = taxResult.netIncome / 12 + income.monthlyTaxFree;
   const remaining = monthlyNet - totalExpenses;
 
@@ -26,71 +27,78 @@ export default function SummaryCards() {
       label: 'Gross Income',
       value: formatCurrency(taxResult.grossIncome + income.monthlyTaxFree * 12),
       sub: '/year',
-      bg: 'bg-blue-50',
-      color: 'text-blue-700',
+      bg: 'bg-blue-50 dark:bg-blue-950',
+      color: 'text-blue-700 dark:text-blue-300',
     },
     {
       label: 'Total Tax',
       value: formatCurrency(taxResult.totalTax),
       sub: '/year',
-      bg: 'bg-red-50',
-      color: 'text-red-700',
+      bg: 'bg-red-50 dark:bg-red-950',
+      color: 'text-red-700 dark:text-red-300',
     },
     {
       label: 'Tax Credits',
       value: formatCurrency(taxResult.childTaxCredit),
       sub: '/year',
-      bg: 'bg-green-50',
-      color: 'text-green-700',
+      bg: 'bg-green-50 dark:bg-green-950',
+      color: 'text-green-700 dark:text-green-300',
     },
     {
       label: 'Net Income',
       value: formatCurrency(taxResult.netIncome + income.monthlyTaxFree * 12),
       sub: '/year',
-      bg: 'bg-emerald-50',
-      color: 'text-emerald-700',
+      bg: 'bg-emerald-50 dark:bg-emerald-950',
+      color: 'text-emerald-700 dark:text-emerald-300',
     },
     {
       label: 'Expenses',
       value: formatCurrency(totalExpenses),
       sub: '/month',
-      bg: 'bg-orange-50',
-      color: 'text-orange-700',
+      bg: 'bg-orange-50 dark:bg-orange-950',
+      color: 'text-orange-700 dark:text-orange-300',
     },
     {
       label: 'Remaining',
       value: formatCurrency(remaining),
       sub: '/month',
-      bg: remaining >= 0 ? 'bg-teal-50' : 'bg-red-50',
-      color: remaining >= 0 ? 'text-teal-700' : 'text-red-700',
+      bg: remaining >= 0 ? 'bg-teal-50 dark:bg-teal-950' : 'bg-red-50 dark:bg-red-950',
+      color: remaining >= 0 ? 'text-teal-700 dark:text-teal-300' : 'text-red-700 dark:text-red-300',
     },
     {
       label: 'Total Debt',
       value: formatCurrency(totalDebt),
       sub: '',
-      bg: 'bg-rose-50',
-      color: 'text-rose-700',
+      bg: 'bg-rose-50 dark:bg-rose-950',
+      color: 'text-rose-700 dark:text-rose-300',
     },
     {
-      label: 'Total Savings',
-      value: formatCurrency(totalSavings),
+      label: 'Cash Accounts',
+      value: formatCurrency(totalCash),
       sub: '',
-      bg: 'bg-cyan-50',
-      color: 'text-cyan-700',
+      bg: 'bg-cyan-50 dark:bg-cyan-950',
+      color: 'text-cyan-700 dark:text-cyan-300',
+    },
+    {
+      label: 'Investments',
+      value: formatCurrency(totalInvestments),
+      sub: '',
+      bg: 'bg-violet-50 dark:bg-violet-950',
+      color: 'text-violet-700 dark:text-violet-300',
     },
     {
       label: 'Total Assets',
       value: formatCurrency(totalAssets),
       sub: '',
-      bg: 'bg-indigo-50',
-      color: 'text-indigo-700',
+      bg: 'bg-indigo-50 dark:bg-indigo-950',
+      color: 'text-indigo-700 dark:text-indigo-300',
     },
     {
       label: 'Net Worth',
       value: formatCurrency(netWorth),
       sub: '',
-      bg: netWorth >= 0 ? 'bg-emerald-50' : 'bg-red-50',
-      color: netWorth >= 0 ? 'text-emerald-700' : 'text-red-700',
+      bg: netWorth >= 0 ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-red-50 dark:bg-red-950',
+      color: netWorth >= 0 ? 'text-emerald-700 dark:text-emerald-300' : 'text-red-700 dark:text-red-300',
     },
   ];
 
@@ -98,10 +106,10 @@ export default function SummaryCards() {
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {cards.map((card) => (
         <div key={card.label} className={`${card.bg} rounded-xl p-4`}>
-          <p className="text-xs text-gray-600 mb-1">{card.label}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{card.label}</p>
           <p className={`text-lg font-bold ${card.color}`}>
             {card.value}
-            {card.sub && <span className="text-xs font-normal text-gray-400">{card.sub}</span>}
+            {card.sub && <span className="text-xs font-normal text-gray-400 dark:text-gray-500">{card.sub}</span>}
           </p>
         </div>
       ))}

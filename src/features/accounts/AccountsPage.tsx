@@ -4,7 +4,8 @@ import Button from '../../common/components/Button.tsx';
 import AccountForm from './AccountForm.tsx';
 import AssetForm from './AssetForm.tsx';
 import DebtList from './DebtList.tsx';
-import SavingsList from './SavingsList.tsx';
+import CashAccountsList from './SavingsList.tsx';
+import InvestmentsList from './InvestmentsList.tsx';
 import AssetList from './AssetList.tsx';
 import type { Account, Asset } from '../../common/types/index.ts';
 
@@ -44,7 +45,8 @@ export default function AccountsPage() {
       </PageHeader>
       <div className="space-y-6">
         <DebtList onEdit={handleEditAccount} />
-        <SavingsList onEdit={handleEditAccount} />
+        <CashAccountsList onEdit={handleEditAccount} />
+        <InvestmentsList onEdit={handleEditAccount} />
         <AssetList onEdit={handleEditAsset} />
       </div>
       <AccountForm open={showAccountForm} onClose={handleCloseAccountForm} editAccount={editAccount} />

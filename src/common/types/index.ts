@@ -108,17 +108,27 @@ export const DEBT_CATEGORY_COMPOUNDING: Record<DebtCategory, CompoundingType> = 
   other: 'monthly',
 };
 
-// Account (debt or savings)
+// Account type
+export type AccountType = 'debt' | 'cash' | 'investment';
+
+export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
+  debt: 'Debt',
+  cash: 'Cash Account',
+  investment: 'Investment',
+};
+
+// Account (debt, cash, or investment)
 export interface Account {
   id: string;
   name: string;
-  type: 'debt' | 'savings';
+  type: AccountType;
   balance: number;
   interestRate: number; // APR as percentage (e.g. 5.5 for 5.5%)
   minimumPayment: number; // monthly minimum (debts only)
   compoundingType: CompoundingType;
   debtCategory: DebtCategory;
   dueDay: number; // day of month payment is due (1-31), 0 = not set
+  creditLimit: number; // total credit limit (credit cards only)
 }
 
 // Income change log entry

@@ -23,17 +23,17 @@ export default function ExpenseSummary() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div className="bg-blue-50 rounded-xl p-4">
-        <p className="text-sm text-gray-600">Net Monthly Income</p>
-        <p className="text-xl font-bold text-blue-700">{formatCurrency(monthlyNet)}</p>
+      <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">Net Monthly Income</p>
+        <p className="text-xl font-bold text-blue-700 dark:text-blue-300">{formatCurrency(monthlyNet)}</p>
       </div>
-      <div className="bg-red-50 rounded-xl p-4">
-        <p className="text-sm text-gray-600">Total Expenses</p>
-        <p className="text-xl font-bold text-red-700">{formatCurrency(totalExpenses)}</p>
+      <div className="bg-red-50 dark:bg-red-950 rounded-xl p-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">Total Expenses</p>
+        <p className="text-xl font-bold text-red-700 dark:text-red-300">{formatCurrency(totalExpenses)}</p>
       </div>
-      <div className={`rounded-xl p-4 ${remaining >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
-        <p className="text-sm text-gray-600">Remaining</p>
-        <p className={`text-xl font-bold ${remaining >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+      <div className={`rounded-xl p-4 ${remaining >= 0 ? 'bg-green-50 dark:bg-green-950' : 'bg-red-50 dark:bg-red-950'}`}>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Remaining</p>
+        <p className={`text-xl font-bold ${remaining >= 0 ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
           {formatCurrency(remaining)}
         </p>
       </div>

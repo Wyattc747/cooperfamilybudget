@@ -58,31 +58,31 @@ export default function StrategyComparison() {
             key={card.label}
             className={`rounded-lg border-2 p-4 ${
               (card.label === 'Avalanche' && avalancheWins) || (card.label === 'Snowball' && !avalancheWins)
-                ? 'border-green-300 bg-green-50'
-                : 'border-gray-200'
+                ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
+                : 'border-gray-200 dark:border-gray-700'
             }`}
           >
-            <h4 className="font-semibold text-sm mb-1">{card.label}</h4>
-            <p className="text-xs text-gray-500 mb-3">{card.description}</p>
+            <h4 className="font-semibold text-sm dark:text-gray-200 mb-1">{card.label}</h4>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{card.description}</p>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">Months to payoff</span>
-                <span className="font-medium">{card.data.totalMonths}</span>
+                <span className="text-gray-600 dark:text-gray-400">Months to payoff</span>
+                <span className="font-medium dark:text-gray-200">{card.data.totalMonths}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Total interest</span>
-                <span className="font-medium text-red-600">{formatCurrency(card.data.totalInterestPaid)}</span>
+                <span className="text-gray-600 dark:text-gray-400">Total interest</span>
+                <span className="font-medium text-red-600 dark:text-red-400">{formatCurrency(card.data.totalInterestPaid)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Total paid</span>
-                <span className="font-medium">{formatCurrency(card.data.totalPaid)}</span>
+                <span className="text-gray-600 dark:text-gray-400">Total paid</span>
+                <span className="font-medium dark:text-gray-200">{formatCurrency(card.data.totalPaid)}</span>
               </div>
             </div>
           </div>
         ))}
       </div>
       {interestSaved > 0 && (
-        <p className="text-sm text-green-700 mt-3 font-medium text-center">
+        <p className="text-sm text-green-700 dark:text-green-400 mt-3 font-medium text-center">
           {avalancheWins ? 'Avalanche' : 'Snowball'} saves {formatCurrency(interestSaved)} in interest
         </p>
       )}

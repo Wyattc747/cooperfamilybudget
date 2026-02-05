@@ -15,9 +15,9 @@ export default function AssetList({ onEdit }: AssetListProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-gray-700">Assets</h3>
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Assets</h3>
         {assets.length > 0 && (
-          <span className="text-sm font-semibold text-indigo-600">Total: {formatCurrency(totalAssets)}</span>
+          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Total: {formatCurrency(totalAssets)}</span>
         )}
       </div>
       {assets.length === 0 ? (

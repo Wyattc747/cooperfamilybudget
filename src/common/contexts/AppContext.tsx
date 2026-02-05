@@ -122,9 +122,12 @@ function inferDebtCategory(a: { compoundingType?: string; name?: string }): stri
 function migrateState(state: AppState): AppState {
   const accounts = state.accounts.map((a) => ({
     ...a,
+    // Migrate legacy 'savings' type to 'cash'
+    type: (a.type as string) === 'savings' ? 'cash' as const : a.type,
     compoundingType: a.compoundingType ?? 'monthly',
     dueDay: a.dueDay ?? 0,
     debtCategory: a.debtCategory ?? (a.type === 'debt' ? inferDebtCategory(a) : 'other'),
+    creditLimit: a.creditLimit ?? 0,
   }));
   const income = {
     ...state.income,

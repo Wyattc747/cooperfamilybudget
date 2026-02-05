@@ -3,28 +3,28 @@ import AccountCard from './AccountCard.tsx';
 import type { Account } from '../../common/types/index.ts';
 import { formatCurrency } from '../../common/utils/formatters.ts';
 
-interface CashAccountsListProps {
+interface InvestmentsListProps {
   onEdit: (account: Account) => void;
 }
 
-export default function CashAccountsList({ onEdit }: CashAccountsListProps) {
+export default function InvestmentsList({ onEdit }: InvestmentsListProps) {
   const { state, dispatch } = useApp();
-  const cashAccounts = state.accounts.filter((a) => a.type === 'cash');
-  const totalCash = cashAccounts.reduce((sum, s) => sum + s.balance, 0);
+  const investments = state.accounts.filter((a) => a.type === 'investment');
+  const totalInvestments = investments.reduce((sum, s) => sum + s.balance, 0);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Cash Accounts</h3>
-        {cashAccounts.length > 0 && (
-          <span className="text-sm font-semibold text-green-600 dark:text-green-400">Total: {formatCurrency(totalCash)}</span>
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Investments</h3>
+        {investments.length > 0 && (
+          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Total: {formatCurrency(totalInvestments)}</span>
         )}
       </div>
-      {cashAccounts.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-4">No cash accounts added</p>
+      {investments.length === 0 ? (
+        <p className="text-sm text-gray-400 text-center py-4">No investments added</p>
       ) : (
         <div className="space-y-2">
-          {cashAccounts.map((s) => (
+          {investments.map((s) => (
             <AccountCard
               key={s.id}
               account={s}

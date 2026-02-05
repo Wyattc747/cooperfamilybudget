@@ -40,7 +40,7 @@ export default function WithdrawalAnalysis() {
 
   return (
     <Card title="401k Withdrawal Analysis">
-      <p className="text-xs text-gray-500 mb-4">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
         Should you withdraw from your 401k to pay off debt? Compare the total cost of both approaches.
       </p>
 
@@ -89,16 +89,16 @@ export default function WithdrawalAnalysis() {
           </div>
 
           <div className={`rounded-lg p-4 text-center ${
-            result.winner === 'keep' ? 'bg-blue-50 border border-blue-200' : 'bg-green-50 border border-green-200'
+            result.winner === 'keep' ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
           }`}>
-            <p className="font-semibold text-sm">
+            <p className="font-semibold text-sm dark:text-gray-200">
               {result.winner === 'keep'
                 ? 'Recommendation: Keep your 401k and pay debts normally'
                 : 'Recommendation: Withdrawing may save you money overall'}
             </p>
-            <p className="text-sm mt-1">
+            <p className="text-sm mt-1 dark:text-gray-300">
               {result.winner === 'keep' ? 'Keeping' : 'Withdrawing'} saves{' '}
-              <span className="font-bold text-green-700">{formatCurrency(result.savings)}</span>{' '}
+              <span className="font-bold text-green-700 dark:text-green-400">{formatCurrency(result.savings)}</span>{' '}
               over {Math.ceil(result.timeHorizonMonths / 12)} years
             </p>
           </div>
@@ -120,11 +120,11 @@ function ScenarioCard({
   isWinner: boolean;
 }) {
   return (
-    <div className={`rounded-lg border-2 p-4 ${isWinner ? 'border-green-300 bg-green-50' : 'border-gray-200'}`}>
+    <div className={`rounded-lg border-2 p-4 ${isWinner ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
       <div className="flex items-center gap-2 mb-3">
-        <h4 className="font-semibold text-sm">{scenario.label}</h4>
+        <h4 className="font-semibold text-sm dark:text-gray-200">{scenario.label}</h4>
         {isWinner && (
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-200 text-green-800 font-medium">
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-300 font-medium">
             Better
           </span>
         )}
@@ -140,7 +140,7 @@ function ScenarioCard({
         {scenario.lostGrowth > 0 && (
           <Row label="Lost 401k growth" value={formatCurrency(scenario.lostGrowth)} color="text-amber-600" />
         )}
-        <div className="border-t border-gray-200 pt-1.5">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-1.5">
           <Row label="Total cost" value={formatCurrency(scenario.totalCost)} color="font-bold" />
         </div>
         <Row label="Months to payoff" value={String(scenario.monthsToPayoff)} />
@@ -153,8 +153,8 @@ function ScenarioCard({
 function Row({ label, value, color = '' }: { label: string; value: string; color?: string }) {
   return (
     <div className="flex justify-between">
-      <span className="text-gray-600">{label}</span>
-      <span className={`font-medium ${color}`}>{value}</span>
+      <span className="text-gray-600 dark:text-gray-400">{label}</span>
+      <span className={`font-medium dark:text-gray-200 ${color}`}>{value}</span>
     </div>
   );
 }

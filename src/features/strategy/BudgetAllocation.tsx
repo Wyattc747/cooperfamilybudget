@@ -26,7 +26,7 @@ export default function BudgetAllocation({ currentPhase, monthlyBudget }: Budget
 
   return (
     <Card title="Recommended Budget Allocation">
-      <p className="text-xs text-gray-500 mb-4">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
         Phase {allocation.phase} recommended split of your {formatCurrency(monthlyBudget)}/mo available budget.
       </p>
 
@@ -53,11 +53,11 @@ export default function BudgetAllocation({ currentPhase, monthlyBudget }: Budget
                 className="w-3 h-3 rounded-sm shrink-0"
                 style={{ backgroundColor: a.color }}
               />
-              <span className="text-gray-700">{a.label}</span>
+              <span className="text-gray-700 dark:text-gray-300">{a.label}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 text-xs">{a.percentage}%</span>
-              <span className="font-medium">{formatCurrency(a.amount)}</span>
+              <span className="font-medium dark:text-gray-200">{formatCurrency(a.amount)}</span>
             </div>
           </div>
         ))}

@@ -104,22 +104,22 @@ export default function UnexpectedExpenses() {
     <>
       <Card>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold">Unexpected Expenses</h3>
+          <h3 className="text-lg font-semibold dark:text-gray-100">Unexpected Expenses</h3>
           <Button size="sm" onClick={() => openForm()}>+ Add</Button>
         </div>
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
           Track one-time or surprise expenses separate from your recurring monthly bills.
         </p>
 
         {unexpectedExpenses.length > 0 && (
           <div className="flex gap-4 mb-3">
-            <div className="text-center px-3 py-1.5 bg-amber-50 rounded-lg flex-1">
-              <p className="text-[10px] text-amber-600 uppercase tracking-wide">This Month</p>
-              <p className="text-sm font-semibold text-amber-700">{formatCurrency(totalThisMonth)}</p>
+            <div className="text-center px-3 py-1.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg flex-1">
+              <p className="text-[10px] text-amber-600 dark:text-amber-400 uppercase tracking-wide">This Month</p>
+              <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">{formatCurrency(totalThisMonth)}</p>
             </div>
-            <div className="text-center px-3 py-1.5 bg-gray-50 rounded-lg flex-1">
-              <p className="text-[10px] text-gray-500 uppercase tracking-wide">All Time</p>
-              <p className="text-sm font-semibold text-gray-700">{formatCurrency(totalAll)}</p>
+            <div className="text-center px-3 py-1.5 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex-1">
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide">All Time</p>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{formatCurrency(totalAll)}</p>
             </div>
           </div>
         )}
@@ -135,19 +135,19 @@ export default function UnexpectedExpenses() {
               return (
                 <div key={monthKey}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">{monthLabel}</span>
-                    <span className="text-xs font-medium text-amber-600">{formatCurrency(monthTotal)}</span>
+                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{monthLabel}</span>
+                    <span className="text-xs font-medium text-amber-600 dark:text-amber-400">{formatCurrency(monthTotal)}</span>
                   </div>
                   <div className="space-y-1">
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-gray-50 group"
+                        className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 group"
                       >
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-700">{item.name}</span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.name}</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
                               {item.category}
                             </span>
                           </div>
@@ -159,11 +159,11 @@ export default function UnexpectedExpenses() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1">
-                          <span className="text-sm font-semibold text-gray-700 tabular-nums">{formatCurrency(item.amount)}</span>
+                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tabular-nums">{formatCurrency(item.amount)}</span>
                           <div className="opacity-0 group-hover:opacity-100 flex gap-0.5">
                             <button
                               onClick={() => openForm(item)}
-                              className="text-gray-400 hover:text-blue-500 p-0.5"
+                              className="text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 p-0.5"
                               title="Edit"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -172,7 +172,7 @@ export default function UnexpectedExpenses() {
                             </button>
                             <button
                               onClick={() => dispatch({ type: 'DELETE_UNEXPECTED_EXPENSE', payload: item.id })}
-                              className="text-gray-400 hover:text-red-500 p-0.5"
+                              className="text-gray-400 hover:text-red-500 dark:hover:text-red-400 p-0.5"
                               title="Delete"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
