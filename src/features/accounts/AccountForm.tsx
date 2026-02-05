@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../common/contexts/AppContext.tsx';
-import { Input, Select } from '../../common/components/FormInput.tsx';
+import { Input, Select, FormRow } from '../../common/components/FormInput.tsx';
 import Button from '../../common/components/Button.tsx';
 import Modal from '../../common/components/Modal.tsx';
-import type { Account, CompoundingType, DebtCategory } from '../../common/types/index.ts';
+import type { Account, AccountType, CompoundingType, DebtCategory } from '../../common/types/index.ts';
 import { DEBT_CATEGORY_LABELS, DEBT_CATEGORY_COMPOUNDING } from '../../common/types/index.ts';
+import { estimateMinimumPayment } from '../../common/utils/debtPayoff.ts';
 
 interface AccountFormProps {
   open: boolean;
@@ -28,13 +29,28 @@ const dueDayOptions = [
 export default function AccountForm({ open, onClose, editAccount }: AccountFormProps) {
   const { dispatch } = useApp();
   const [name, setName] = useState(editAccount?.name ?? '');
-  const [type, setType] = useState<'debt' | 'savings'>(editAccount?.type ?? 'debt');
+  const [type, setType] = useState<AccountType>(editAccount?.type ?? 'debt');
   const [balance, setBalance] = useState(editAccount?.balance.toString() ?? '');
   const [interestRate, setInterestRate] = useState(editAccount?.interestRate.toString() ?? '');
   const [minimumPayment, setMinimumPayment] = useState(editAccount?.minimumPayment.toString() ?? '');
   const [debtCategory, setDebtCategory] = useState<DebtCategory>(editAccount?.debtCategory ?? 'credit_card');
   const [compoundingType, setCompoundingType] = useState<CompoundingType>(editAccount?.compoundingType ?? 'daily_compound');
   const [dueDay, setDueDay] = useState(editAccount?.dueDay?.toString() ?? '');
+  const [creditLimit, setCreditLimit] = useState(editAccount?.creditLimit?.toString() ?? '');
+  const [isMinPaymentManual, setIsMinPaymentManual] = useState(!!editAccount);
+
+  // Auto-calculate minimum payment when relevant fields change
+  useEffect(() => {
+    if (type !== 'debt' || isMinPaymentManual) return;
+    const bal = parseFloat(balance);
+    const apr = parseFloat(interestRate);
+    if (!bal || bal <= 0) {
+      setMinimumPayment('');
+      return;
+    }
+    const estimated = estimateMinimumPayment(bal, apr || 0, compoundingType, debtCategory);
+    setMinimumPayment((Math.round(estimated * 100) / 100).toFixed(2));
+  }, [balance, interestRate, compoundingType, debtCategory, type, isMinPaymentManual]);
 
   function handleCategoryChange(cat: DebtCategory) {
     setDebtCategory(cat);
@@ -55,10 +71,11 @@ export default function AccountForm({ open, onClose, editAccount }: AccountFormP
       type,
       balance: parsedBalance,
       interestRate: parseFloat(interestRate) || 0,
-      minimumPayment: type === 'debt' ? (parseFloat(minimumPayment) || 0) : 0,
+      minimumPayment: type === 'debt' ? Math.round((parseFloat(minimumPayment) || 0) * 100) / 100 : 0,
       compoundingType: type === 'debt' ? compoundingType : 'monthly',
       debtCategory: type === 'debt' ? debtCategory : 'other',
       dueDay: type === 'debt' ? (parseInt(dueDay) || 0) : 0,
+      creditLimit: type === 'debt' && debtCategory === 'credit_card' ? (parseFloat(creditLimit) || 0) : 0,
     };
 
     dispatch({ type: editAccount ? 'EDIT_ACCOUNT' : 'ADD_ACCOUNT', payload: account });
@@ -72,10 +89,11 @@ export default function AccountForm({ open, onClose, editAccount }: AccountFormP
           label="Type"
           options={[
             { value: 'debt', label: 'Debt' },
-            { value: 'savings', label: 'Savings' },
+            { value: 'cash', label: 'Cash Account' },
+            { value: 'investment', label: 'Investment' },
           ]}
           value={type}
-          onChange={(e) => setType(e.target.value as 'debt' | 'savings')}
+          onChange={(e) => setType(e.target.value as AccountType)}
         />
         {type === 'debt' && (
           <Select
@@ -96,7 +114,9 @@ export default function AccountForm({ open, onClose, editAccount }: AccountFormP
             : debtCategory === 'student_loan' ? 'e.g. Federal Direct, Navient'
             : debtCategory === 'auto_loan' ? 'e.g. Honda Civic Loan'
             : 'e.g. Personal Loan'
-            : 'e.g. Emergency Fund, High-Yield Savings'
+            : type === 'cash'
+            ? 'e.g. Checking, Emergency Fund'
+            : 'e.g. 401k, Roth IRA, Brokerage'
           }
         />
         <Input
@@ -120,15 +140,36 @@ export default function AccountForm({ open, onClose, editAccount }: AccountFormP
         />
         {type === 'debt' && (
           <>
-            <Input
-              label="Minimum Monthly Payment"
-              type="number"
-              step="0.01"
-              min="0"
-              value={minimumPayment}
-              onChange={(e) => setMinimumPayment(e.target.value)}
-              placeholder="0.00"
-            />
+            <FormRow label="Minimum Monthly Payment">
+              <input
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
+                type="number"
+                step="0.01"
+                min="0"
+                value={minimumPayment}
+                onChange={(e) => {
+                  setMinimumPayment(e.target.value);
+                  setIsMinPaymentManual(true);
+                }}
+                placeholder="0.00"
+              />
+              {!isMinPaymentManual && minimumPayment && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Estimated from balance & APR
+                </p>
+              )}
+              {isMinPaymentManual && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <button
+                    type="button"
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                    onClick={() => setIsMinPaymentManual(false)}
+                  >
+                    Reset to estimated
+                  </button>
+                </p>
+              )}
+            </FormRow>
             <Select
               label="Interest Compounding"
               options={[
@@ -139,6 +180,17 @@ export default function AccountForm({ open, onClose, editAccount }: AccountFormP
               value={compoundingType}
               onChange={(e) => setCompoundingType(e.target.value as CompoundingType)}
             />
+            {debtCategory === 'credit_card' && (
+              <Input
+                label="Credit Limit"
+                type="number"
+                step="0.01"
+                min="0"
+                value={creditLimit}
+                onChange={(e) => setCreditLimit(e.target.value)}
+                placeholder="e.g. 5000"
+              />
+            )}
             <Select
               label="Payment Due Day"
               options={dueDayOptions}
