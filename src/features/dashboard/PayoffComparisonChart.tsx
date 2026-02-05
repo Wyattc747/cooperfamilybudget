@@ -8,7 +8,7 @@ import Card from '../../common/components/Card.tsx';
 
 export default function PayoffComparisonChart() {
   const { state } = useApp();
-  const debts = state.accounts.filter((a) => a.type === 'debt');
+  const debts = state.accounts.filter((a) => a.type === 'debt' && a.debtCategory === 'credit_card');
   const { effectiveBudget: budget, payDelayMonths, delayBudget } = usePayoffBudget();
   const payDelay: PayDelay | undefined = payDelayMonths > 0 ? { months: payDelayMonths, delayBudget } : undefined;
 

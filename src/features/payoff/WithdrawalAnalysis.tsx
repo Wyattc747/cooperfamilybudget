@@ -9,7 +9,7 @@ import { Input } from '../../common/components/FormInput.tsx';
 export default function WithdrawalAnalysis() {
   const { state } = useApp();
   const { effectiveBudget } = usePayoffBudget();
-  const debts = state.accounts.filter((a) => a.type === 'debt');
+  const debts = state.accounts.filter((a) => a.type === 'debt' && a.debtCategory === 'credit_card');
 
   const [balance401k, setBalance401k] = useState('');
   const [expectedReturn, setExpectedReturn] = useState('7');

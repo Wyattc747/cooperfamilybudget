@@ -14,13 +14,15 @@ export default function SummaryCards() {
   );
 
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const totalDebtMinimums = accounts.filter((a) => a.type === 'debt').reduce((sum, a) => sum + a.minimumPayment, 0);
+  const totalMonthlyObligations = totalExpenses + totalDebtMinimums;
   const totalDebt = accounts.filter((a) => a.type === 'debt').reduce((sum, a) => sum + a.balance, 0);
   const totalCash = accounts.filter((a) => a.type === 'cash').reduce((sum, a) => sum + a.balance, 0);
   const totalInvestments = accounts.filter((a) => a.type === 'investment').reduce((sum, a) => sum + a.balance, 0);
   const totalAssets = assets.reduce((sum, a) => sum + a.value, 0);
   const netWorth = totalCash + totalInvestments + totalAssets - totalDebt;
   const monthlyNet = taxResult.netIncome / 12 + income.monthlyTaxFree;
-  const remaining = monthlyNet - totalExpenses;
+  const remaining = monthlyNet - totalMonthlyObligations;
 
   const cards = [
     {
@@ -52,9 +54,9 @@ export default function SummaryCards() {
       color: 'text-emerald-700 dark:text-emerald-300',
     },
     {
-      label: 'Expenses',
-      value: formatCurrency(totalExpenses),
-      sub: '/month',
+      label: 'Monthly Obligations',
+      value: formatCurrency(totalMonthlyObligations),
+      sub: totalDebtMinimums > 0 ? ` (incl. ${formatCurrency(totalDebtMinimums)} debt mins)` : '/month',
       bg: 'bg-orange-50 dark:bg-orange-950',
       color: 'text-orange-700 dark:text-orange-300',
     },

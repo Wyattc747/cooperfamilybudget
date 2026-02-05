@@ -11,6 +11,12 @@ export default function ExpenseSummary() {
     [state.expenses]
   );
 
+  const totalDebtMinimums = useMemo(
+    () => state.accounts.filter((a) => a.type === 'debt').reduce((sum, a) => sum + a.minimumPayment, 0),
+    [state.accounts]
+  );
+  const totalMonthlyObligations = totalExpenses + totalDebtMinimums;
+
   const { baseSalary, monthlyCommission, monthlyBusinessIncome, dependents, stateTaxRate, filingStatus } = state.income;
   const annualBusiness = monthlyBusinessIncome * 12;
   const taxResult = useMemo(
@@ -19,7 +25,7 @@ export default function ExpenseSummary() {
   );
 
   const monthlyNet = taxResult.netIncome / 12 + state.income.monthlyTaxFree;
-  const remaining = monthlyNet - totalExpenses;
+  const remaining = monthlyNet - totalMonthlyObligations;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -28,8 +34,13 @@ export default function ExpenseSummary() {
         <p className="text-xl font-bold text-blue-700 dark:text-blue-300">{formatCurrency(monthlyNet)}</p>
       </div>
       <div className="bg-red-50 dark:bg-red-950 rounded-xl p-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400">Total Expenses</p>
-        <p className="text-xl font-bold text-red-700 dark:text-red-300">{formatCurrency(totalExpenses)}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Total Monthly Obligations</p>
+        <p className="text-xl font-bold text-red-700 dark:text-red-300">{formatCurrency(totalMonthlyObligations)}</p>
+        {totalDebtMinimums > 0 && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            {formatCurrency(totalExpenses)} expenses + {formatCurrency(totalDebtMinimums)} debt minimums
+          </p>
+        )}
       </div>
       <div className={`rounded-xl p-4 ${remaining >= 0 ? 'bg-green-50 dark:bg-green-950' : 'bg-red-50 dark:bg-red-950'}`}>
         <p className="text-sm text-gray-600 dark:text-gray-400">Remaining</p>

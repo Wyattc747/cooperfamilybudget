@@ -18,7 +18,7 @@ interface BudgetLine {
 export default function ProposedBudget() {
   const { state } = useApp();
   const { expenses, accounts } = state;
-  const { monthlyNet, totalExpenses } = usePayoffBudget();
+  const { monthlyNet, totalExpenses, totalDebtMinimums } = usePayoffBudget();
   const [showNeeds, setShowNeeds] = useState(false);
 
   const debts = accounts.filter((a) => a.type === 'debt');
@@ -301,8 +301,8 @@ export default function ProposedBudget() {
 
       {/* Footer */}
       <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-xs text-gray-400">
-        <span>Spending: {formatCurrency(totalExpenses)}/mo</span>
-        <span>Remaining: {formatCurrency(Math.max(0, monthlyNet - totalExpenses))}/mo</span>
+        <span>Obligations: {formatCurrency(totalExpenses + totalDebtMinimums)}/mo</span>
+        <span>Remaining: {formatCurrency(Math.max(0, monthlyNet - totalExpenses - totalDebtMinimums))}/mo</span>
       </div>
     </Card>
   );

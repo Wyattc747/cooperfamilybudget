@@ -10,12 +10,12 @@ import HouseAffordability from './HouseAffordability.tsx';
 
 export default function StrategyPage() {
   const { state } = useApp();
-  const { totalExpenses, effectiveBudget, payDelayMonths, delayBudget } = usePayoffBudget();
+  const { totalMonthlyObligations, effectiveBudget, payDelayMonths, delayBudget } = usePayoffBudget();
   const debts = state.accounts.filter((a) => a.type === 'debt');
 
   const roadmap = useMemo(
-    () => calculateRoadmap(state.income, debts, totalExpenses, effectiveBudget, undefined, payDelayMonths, delayBudget),
-    [state.income, debts, totalExpenses, effectiveBudget, payDelayMonths, delayBudget]
+    () => calculateRoadmap(state.income, debts, totalMonthlyObligations, effectiveBudget, undefined, payDelayMonths, delayBudget),
+    [state.income, debts, totalMonthlyObligations, effectiveBudget, payDelayMonths, delayBudget]
   );
 
   return (

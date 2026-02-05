@@ -7,7 +7,7 @@ import Button from '../../common/components/Button.tsx';
 export default function PayoffSettings() {
   const { state, dispatch } = useApp();
   const { payoffSettings } = state;
-  const { monthlyNet, totalExpenses, calculatedBudget, effectiveBudget, payDelayMonths, delayBudget } = usePayoffBudget();
+  const { monthlyNet, totalExpenses, nonCCDebtMinimums, calculatedBudget, effectiveBudget, payDelayMonths, delayBudget } = usePayoffBudget();
 
   function handleBudgetChange(value: string) {
     const num = parseFloat(value);
@@ -25,24 +25,30 @@ export default function PayoffSettings() {
   }
 
   return (
-    <Card title="Payoff Budget">
+    <Card title="Credit Card Payoff Budget">
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-600 dark:text-gray-400">Net Monthly Income</span>
           <span className="font-medium dark:text-gray-200">{formatCurrency(monthlyNet)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Total Monthly Expenses</span>
+          <span className="text-gray-600 dark:text-gray-400">Monthly Expenses</span>
           <span className="font-medium text-red-600 dark:text-red-400">-{formatCurrency(totalExpenses)}</span>
         </div>
+        {nonCCDebtMinimums > 0 && (
+          <div className="flex justify-between">
+            <span className="text-gray-600 dark:text-gray-400">Other Debt Minimums</span>
+            <span className="font-medium text-red-600 dark:text-red-400">-{formatCurrency(nonCCDebtMinimums)}</span>
+          </div>
+        )}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">Available for Debt Payoff</span>
+          <span className="text-gray-600 dark:text-gray-400">Available for CC Payoff</span>
           <span className="font-semibold dark:text-gray-200">{formatCurrency(calculatedBudget)}</span>
         </div>
       </div>
 
       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Monthly Payoff Budget</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Monthly CC Payoff Budget</label>
         <div className="flex gap-2">
           <input
             type="number"

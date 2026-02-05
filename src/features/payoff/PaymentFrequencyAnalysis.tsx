@@ -16,7 +16,7 @@ const FREQUENCY_LABELS: Record<PaymentFrequency, string> = {
 export default function PaymentFrequencyAnalysis() {
   const { state } = useApp();
   const { effectiveBudget } = usePayoffBudget();
-  const debts = state.accounts.filter((a) => a.type === 'debt');
+  const debts = state.accounts.filter((a) => a.type === 'debt' && a.debtCategory === 'credit_card');
   const [mode, setMode] = useState<'same_annual' | 'biweekly_extra'>('same_annual');
 
   const results = useMemo(

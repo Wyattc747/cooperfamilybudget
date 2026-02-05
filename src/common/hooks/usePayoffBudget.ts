@@ -5,6 +5,12 @@ import { calculateTaxBreakdown } from '../utils/taxCalculator.ts';
 export interface PayoffBudget {
   monthlyNet: number;
   totalExpenses: number;
+  /** Sum of all debt account minimum payments */
+  totalDebtMinimums: number;
+  /** Sum of non-credit-card debt minimum payments */
+  nonCCDebtMinimums: number;
+  /** totalExpenses + totalDebtMinimums (for display) */
+  totalMonthlyObligations: number;
   calculatedBudget: number;
   effectiveBudget: number;
   /** Budget during the pay-delay period (no salary/commission, only business + tax-free) */
@@ -52,12 +58,19 @@ export function usePayoffBudget(): PayoffBudget {
 
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
 
-  const calculatedBudget = Math.max(0, monthlyNet - totalExpenses);
+  const allDebts = state.accounts.filter((a) => a.type === 'debt');
+  const totalDebtMinimums = allDebts.reduce((sum, d) => sum + d.minimumPayment, 0);
+  const nonCCDebtMinimums = allDebts
+    .filter((d) => d.debtCategory !== 'credit_card')
+    .reduce((sum, d) => sum + d.minimumPayment, 0);
+  const totalMonthlyObligations = totalExpenses + totalDebtMinimums;
+
+  const calculatedBudget = Math.max(0, monthlyNet - totalExpenses - nonCCDebtMinimums);
   const effectiveBudget = payoffSettings.isManualOverride
     ? payoffSettings.monthlyBudget
     : calculatedBudget;
 
-  const delayBudget = Math.max(0, delayMonthlyNet - totalExpenses);
+  const delayBudget = Math.max(0, delayMonthlyNet - totalExpenses - nonCCDebtMinimums);
 
   // Calculate months until pay starts
   let payDelayMonths = 0;
@@ -70,5 +83,5 @@ export function usePayoffBudget(): PayoffBudget {
     }
   }
 
-  return { monthlyNet, totalExpenses, calculatedBudget, effectiveBudget, delayBudget, payDelayMonths };
+  return { monthlyNet, totalExpenses, totalDebtMinimums, nonCCDebtMinimums, totalMonthlyObligations, calculatedBudget, effectiveBudget, delayBudget, payDelayMonths };
 }

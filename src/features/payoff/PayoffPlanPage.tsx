@@ -9,15 +9,20 @@ import WithdrawalAnalysis from './WithdrawalAnalysis.tsx';
 
 export default function PayoffPlanPage() {
   const { state } = useApp();
-  const debts = state.accounts.filter((a) => a.type === 'debt');
+  const debts = state.accounts.filter((a) => a.type === 'debt' && a.debtCategory === 'credit_card');
+  const hasNonCCDebts = state.accounts.some((a) => a.type === 'debt' && a.debtCategory !== 'credit_card');
 
   return (
     <div>
-      <PageHeader title="Payoff Plan" />
+      <PageHeader title="Credit Card Payoff Plan" />
       {debts.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
-          <p className="text-lg">No debts to pay off</p>
-          <p className="text-sm mt-1">Add debts in the Accounts page to create a payoff plan</p>
+          <p className="text-lg">No credit card debt to pay off</p>
+          <p className="text-sm mt-1">
+            {hasNonCCDebts
+              ? 'The payoff plan focuses on credit cards. Your other debt minimums are included in monthly expenses.'
+              : 'Add credit card debts in the Accounts page to create a payoff plan.'}
+          </p>
         </div>
       ) : (
         <div className="space-y-6">
