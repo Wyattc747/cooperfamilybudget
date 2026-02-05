@@ -49,7 +49,7 @@ export default function AccountsPage() {
         <InvestmentsList onEdit={handleEditAccount} />
         <AssetList onEdit={handleEditAsset} />
       </div>
-      <AccountForm open={showAccountForm} onClose={handleCloseAccountForm} editAccount={editAccount} />
+      {showAccountForm && <AccountForm open={showAccountForm} onClose={handleCloseAccountForm} editAccount={editAccount} />}
       <AssetForm open={showAssetForm} onClose={handleCloseAssetForm} editAsset={editAsset} />
     </div>
   );
