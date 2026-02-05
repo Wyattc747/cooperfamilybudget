@@ -35,10 +35,17 @@ export default function HouseAffordability() {
   );
 
   const totalDebtPayments = debts.reduce((s, d) => s + d.minimumPayment, 0);
+  const ccDebts = debts.filter((d) => d.debtCategory === 'credit_card');
+  const ccMinPayments = ccDebts.reduce((s, d) => s + d.minimumPayment, 0);
 
   const result = useMemo(
     () => calculateAffordability(grossMonthlyIncome, totalDebtPayments, inputs),
     [grossMonthlyIncome, totalDebtPayments, inputs]
+  );
+
+  const debtFreeResult = useMemo(
+    () => ccMinPayments > 0 ? calculateAffordability(grossMonthlyIncome, totalDebtPayments - ccMinPayments, inputs) : null,
+    [grossMonthlyIncome, totalDebtPayments, ccMinPayments, inputs]
   );
 
   const debtImpact = useMemo(
@@ -137,6 +144,41 @@ export default function HouseAffordability() {
                 {result.monthlyPMI > 0 && ' | PMI required (< 20% down)'}
               </div>
             </div>
+
+            {/* CC debt-free comparison */}
+            {debtFreeResult && (
+              <div className="mt-6 rounded-lg border-2 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-4">
+                <h4 className="font-semibold text-sm text-green-800 dark:text-green-300 mb-3">
+                  Without Credit Card Debt (-{formatCurrency(ccMinPayments)}/mo)
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Max Home Price</p>
+                    <p className="text-lg font-bold text-green-700 dark:text-green-300">{formatCurrency(debtFreeResult.maxHomePrice)}</p>
+                    <p className="text-xs text-green-600 dark:text-green-400">
+                      +{formatCurrency(debtFreeResult.maxHomePrice - result.maxHomePrice)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Back-End DTI</p>
+                    <p className="text-lg font-bold text-green-700 dark:text-green-300">{formatPercent(debtFreeResult.backEndDTI)}</p>
+                    <p className="text-xs text-green-600 dark:text-green-400">
+                      -{formatPercent(result.backEndDTI - debtFreeResult.backEndDTI)} drop
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Monthly Housing</p>
+                    <p className="text-lg font-bold dark:text-gray-200">{formatCurrency(debtFreeResult.totalMonthlyHousing)}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">at max price</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Loan Amount</p>
+                    <p className="text-lg font-bold dark:text-gray-200">{formatCurrency(debtFreeResult.loanAmount)}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">at max price</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <p className="text-gray-400 text-sm text-center py-6">
